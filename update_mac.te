@@ -1,0 +1,21 @@
+# service update_mac in init.rc
+type update_mac, domain, domain_deprecated;
+type update_mac_exec, exec_type, file_type;
+
+init_daemon_domain(update_mac)
+
+# /system/bin/install-recovery.sh is a shell script.
+# Needs to execute /system/bin/sh
+allow update_mac shell_exec:file rx_file_perms;
+
+# Execute /system/bin/*
+allow update_mac system_file:file rx_file_perms;
+allow update_mac toolbox_exec:file rx_file_perms;
+
+# R/W nvdata
+allow update_mac nvdata_file:dir { search write add_name };
+allow update_mac nvdata_file:file { open read getattr create write };
+allow update_mac nvram_data_file:lnk_file { read };
+
+allow update_mac update_mac:capability { dac_override dac_read_search };
+
