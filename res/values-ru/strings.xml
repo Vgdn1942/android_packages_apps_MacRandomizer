@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"Смена MAC-адреса"</string>
+    <string name="enter_mac">"Введите MAC-адрес (12 символов)"</string>
+    <string name="enter_host">"Введите имя хоста (макс. 90 символов)"</string>
+    <string name="random_mac">"Случайный MAC адрес"</string>
+    <string name="restore_mac">"Восстановить MAC адрес"</string>
+    <string name="restore_host">"Восстановить имя хоста"</string>
+    <string name="set_mac">"Применить MAC адрес"</string>
+    <string name="set_host">"Применить имя хоста"</string>
+    <string name="set_mac_error">"MAC-адрес не может быть меньше 12 символов!"</string>
+    <string name="set_mac_ok">"MAC-адрес установлен"</string>
+    <string name="restore_mac_ok">"МАК-адрес восстановлен"</string>
+    <string name="restore_mac_error">"МАК-адрес не восстановлен"</string>
+    <string name="restore_host_ok">"Имя хоста восстановленно"</string>
+    <string name="set_host_ok">"Имя хоста установлено"</string>
+    <string name="set_random_mac_ok">"MAC-адрес установлен произвольным"</string>
+</resources>

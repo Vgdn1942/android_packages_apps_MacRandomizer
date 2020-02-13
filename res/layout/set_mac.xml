@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2011 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="0dip"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dip"
+        >
+
+        <TextView
+            android:id="@+id/prompt_mac"
+            android:text="@string/enter_mac"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+
+        <EditText
+            android:id="@+id/current_mac"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:inputType="textNoSuggestions|textVisiblePassword"
+            android:maxLength="12"
+            android:hint="@string/hint_mac"
+            android:textDirection="locale"/>
+
+        <Button
+            android:id="@+id/set_mac_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="@string/set_mac" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:padding="0dip"
+            >
+
+            <Button
+                android:id="@+id/randome_mac_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/random_mac" />
+
+            <Button
+                android:id="@+id/restore_mac_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/restore_mac" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dip"
+        >
+
+        <TextView
+            android:id="@+id/prompt_host"
+            android:text="@string/enter_host"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+
+        <EditText
+            android:id="@+id/current_host"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:inputType="textNoSuggestions|textVisiblePassword"
+            android:maxLength="90"
+            android:hint="@string/hint_host"
+            android:textDirection="locale"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:padding="0dip"
+            >
+
+            <Button
+                android:id="@+id/set_host_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/set_host" />
+
+            <Button
+                android:id="@+id/restore_host_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/restore_host" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+

@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Change MAC-address</string>
+    <string name="enter_mac">Enter MAC-address (12 characters)</string>
+    <string name="enter_host">Enter host name (max. 90 characters)</string>
+    <string name="random_mac">Random MAC</string>
+    <string name="restore_mac">Restore MAC</string>
+    <string name="restore_host">Restore host name</string>
+    <string name="set_mac">Set MAC</string>
+    <string name="set_host">Set host name</string>
+    <string name="set_mac_error">MAC-address cannot be less than 12 characters!</string>
+    <string name="set_mac_ok">MAC-address set successful</string>
+    <string name="restore_mac_ok">MAC-address restore successful</string>
+    <string name="restore_mac_error">MAC-address restore error</string>
+    <string name="set_host_ok">Host name set successful</string>
+    <string name="restore_host_ok">Host name restore successful</string>
+    <string name="set_random_mac_ok">Set MAC-address to random</string>
+    <string name="hint_mac" translatable="false">XXXXXXXXXXXX</string>
+    <string name="hint_host" translatable="false">BV6000</string>
+</resources>
+
