@@ -1,0 +1,28 @@
+# service update_hosts in init.rc
+type update_hosts, domain, domain_deprecated;
+type update_hosts_exec, exec_type, file_type;
+
+init_daemon_domain(update_hosts)
+
+# /system/bin/install-recovery.sh is a shell script.
+# Needs to execute /system/bin/sh
+allow update_hosts shell_exec:file rx_file_perms;
+
+# Execute /system/bin/*
+allow update_hosts system_file:file rx_file_perms;
+allow update_hosts toolbox_exec:file rx_file_perms;
+
+# Access to /data/media.
+allow update_hosts media_rw_data_file:file { create_file_perms };
+allow update_hosts media_rw_data_file:dir { add_name write search };
+
+allow update_hosts self:capability { dac_override dac_read_search net_admin net_raw };
+
+allow update_hosts node:rawip_socket { create getopt setopt };
+allow update_hosts update_hosts:rawip_socket { create getopt setopt };
+
+# Access to /proc and /sys
+allow update_hosts proc:file { write };
+allow update_hosts sysfs_devices_system_cpu:file { write };
+allow update_hosts sysfs:file { write };
+
