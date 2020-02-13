@@ -14,6 +14,9 @@ Add to system/sepolicy/file_contexts
 
 Add to init.*.rc
 ```
+on boot
+setprop net.hostname ${persist.sys.hostname}
+
 service update_mac /system/bin/install-mac.sh
     class main
     disabled
