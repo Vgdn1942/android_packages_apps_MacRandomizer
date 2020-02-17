@@ -33,14 +33,51 @@ public class SetMacAddress extends Activity {
 
     private WifiManager mWifiManager;
 
+    @Override
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+
+        setContentView(R.layout.set_mac);
+
+        mCurrentMac = (TextView) findViewById(R.id.current_mac);
+        mCurrentHost = (TextView) findViewById(R.id.current_host);
+
+        mSetMac = (Button) findViewById(R.id.set_mac_button);
+        mRandomeMac = (Button) findViewById(R.id.randome_mac_button);
+        mRestoreMac = (Button) findViewById(R.id.restore_mac_button);
+        mSetHost = (Button) findViewById(R.id.set_host_button);
+        mRestoreHost = (Button) findViewById(R.id.restore_host_button);
+
+        mSetMac.setOnClickListener(mButtonListener);
+        mRandomeMac.setOnClickListener(mButtonListener);
+        mRestoreMac.setOnClickListener(mButtonListener);
+        mSetHost.setOnClickListener(mButtonListener);
+        mRestoreHost.setOnClickListener(mButtonListener);
+
+        mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+    }
+
     final OnClickListener mButtonListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
             if (view == mSetMac) {
                 final String curMac = mCurrentMac.getText().toString();
+                final String secondCh = String.valueOf(curMac.charAt(1));
                 if (curMac.length() < 12) {
                     Toast.makeText(SetMacAddress.this,
-                            R.string.set_mac_error,
+                            R.string.short_mac_error,
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!curMac.matches("^([0-9A-Fa-f]{2})+$")) {
+                    Toast.makeText(SetMacAddress.this,
+                            R.string.hex_mac_error,
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (secondCh.matches("[13579BbDdFf]+")) {
+                    Toast.makeText(SetMacAddress.this,
+                            R.string.odd_mac_error,
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -95,30 +132,6 @@ public class SetMacAddress extends Activity {
         }
     };
 
-    @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-
-        setContentView(R.layout.set_mac);
-
-        mCurrentMac = (TextView) findViewById(R.id.current_mac);
-        mCurrentHost = (TextView) findViewById(R.id.current_host);
-
-        mSetMac = (Button) findViewById(R.id.set_mac_button);
-        mRandomeMac = (Button) findViewById(R.id.randome_mac_button);
-        mRestoreMac = (Button) findViewById(R.id.restore_mac_button);
-        mSetHost = (Button) findViewById(R.id.set_host_button);
-        mRestoreHost = (Button) findViewById(R.id.restore_host_button);
-
-        mSetMac.setOnClickListener(mButtonListener);
-        mRandomeMac.setOnClickListener(mButtonListener);
-        mRestoreMac.setOnClickListener(mButtonListener);
-        mSetHost.setOnClickListener(mButtonListener);
-        mRestoreHost.setOnClickListener(mButtonListener);
-
-        mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-    }
-
     private void setMac(boolean isRandomMac, String bytesMac) {
         byte[] bytesToWrite;
 
@@ -128,7 +141,7 @@ public class SetMacAddress extends Activity {
             byte[] buffer = new byte[fileInput.available()];
 
             if (isRandomMac) {
-                bytesToWrite = random(6);
+                bytesToWrite = hexStringToByteArray(getRandomHexMac(12));
             } else {
                 bytesToWrite = hexStringToByteArray(bytesMac);
             }
@@ -138,7 +151,6 @@ public class SetMacAddress extends Activity {
 
             // записываем первые 4 байта из буфера в файл
             for (int i = 0; i < 4; i++) {
-                //fileOutput.write(buffer, 0, buffer.length);
                 fileOutput.write(buffer[i]);
             }
 
@@ -147,7 +159,6 @@ public class SetMacAddress extends Activity {
 
             // записываем оставшиеся байты с 10 до конца из буфера в файл
             for (int i = 10; i < buffer.length; i++) {
-                //fileOutput.write(buffer, 0, buffer.length);
                 fileOutput.write(buffer[i]);
             }
         }
@@ -179,15 +190,8 @@ public class SetMacAddress extends Activity {
         final int state = mWifiManager.getWifiState();
         switch (state) {
             case WifiManager.WIFI_STATE_ENABLING:
-                SystemClock.sleep(250);
-                mWifiManager.setWifiEnabled(false);
-                SystemClock.sleep(250);
-                if (copy) {
-                    copyTo(wifiNvramTmpFile, wifiNvramFile);
-                }
-                mWifiManager.setWifiEnabled(true);
-                break;
             case WifiManager.WIFI_STATE_ENABLED:
+                SystemClock.sleep(250);
                 mWifiManager.setWifiEnabled(false);
                 SystemClock.sleep(250);
                 if (copy) {
@@ -200,35 +204,12 @@ public class SetMacAddress extends Activity {
             case WifiManager.WIFI_STATE_UNKNOWN:
                 if (copy) {
                     copyTo(wifiNvramTmpFile, wifiNvramFile);
-                }                break;
-        }
-    }
-
-    /*
-    private void refreshWifiState() {
-        final int state = mWifiManager.getWifiState();
-        switch (state) {
-            case WifiManager.WIFI_STATE_ENABLING:
-                SystemClock.sleep(250);
-                mWifiManager.setWifiEnabled(false);
-                SystemClock.sleep(250);
-                mWifiManager.setWifiEnabled(true);
-                break;
-            case WifiManager.WIFI_STATE_ENABLED:
-                mWifiManager.setWifiEnabled(false);
-                SystemClock.sleep(250);
-                mWifiManager.setWifiEnabled(true);
-                break;
-            case WifiManager.WIFI_STATE_DISABLING:
-            case WifiManager.WIFI_STATE_DISABLED:
-            case WifiManager.WIFI_STATE_UNKNOWN:
+                }
                 break;
         }
     }
-     */
 
     private static void backup() {
-
         // проверяем доступность SD
         if (!Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {
@@ -263,10 +244,33 @@ public class SetMacAddress extends Activity {
         return data;
     }
 
-    private byte[] random(int length) {
+    private String getRandomHexMac(int length) {
+        String b = "null";
+        do {
+            String s = getRandomHexString(length);
+            String c = String.valueOf(s.charAt(1));
+            if (!c.matches("[13579BbDdFf]+")) {
+                b = s;
+            }
+        } while (b.equals("null"));
+        return b;
+    }
+
+    private String getRandomHexString(int length) {
+        Random r = new Random();
+        StringBuffer sb = new StringBuffer();
+        while (sb.length() < length) {
+            sb.append(Integer.toHexString(r.nextInt()));
+        }
+        return sb.toString().substring(0, length);
+    }
+
+    /*
+    private byte[] randomByte(int length) {
         byte[] array = new byte[length];
         new Random().nextBytes(array);
         return array;
     }
+    */
 }
 

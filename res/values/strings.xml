@@ -1,13 +1,16 @@
 <resources>
     <string name="app_name">Change MAC-address</string>
     <string name="enter_mac">Enter MAC-address (12 characters)</string>
+    <string name="help_mac">Second char should be even (0,2,4,6,8,A,C,E)</string>
     <string name="enter_host">Enter host name (max. 90 characters)</string>
     <string name="random_mac">Random MAC</string>
     <string name="restore_mac">Restore MAC</string>
     <string name="restore_host">Restore host name</string>
     <string name="set_mac">Set MAC</string>
     <string name="set_host">Set host name</string>
-    <string name="set_mac_error">MAC-address cannot be less than 12 characters!</string>
+    <string name="short_mac_error">MAC-address cannot be less than 12 characters!</string>
+    <string name="hex_mac_error">MAC-address should be hex characters!</string>
+    <string name="odd_mac_error">Second char of MAC-address wrong!</string>
     <string name="set_mac_ok">MAC-address set successful</string>
     <string name="restore_mac_ok">MAC-address restore successful</string>
     <string name="restore_mac_error">MAC-address restore error</string>
