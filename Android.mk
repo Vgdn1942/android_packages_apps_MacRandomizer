@@ -14,4 +14,3 @@ LOCAL_DEX_PREOPT := false
 
 include $(BUILD_PACKAGE)
 
-include $(call all-makefiles-under,$(LOCAL_PATH))
